@@ -41,8 +41,11 @@ jobs:
         cd android
         ./gradlew assembleRelease
         
+    - name: List APK files (Debug)
+      run: find android/app/build/outputs/apk -name "*.apk" -type f
+        
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: krihaa-app-release
-        path: android/app/build/outputs/apk/release/app-release-unsigned.apk
+        path: android/app/build/outputs/apk/release/*.apk
