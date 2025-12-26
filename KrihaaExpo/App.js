@@ -1,91 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-  RefreshControl,
-  ActivityIndicator,
-} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-
-// Mock data for testing (replace with Firebase later)
-const mockArticles = [
-  {
-    id: '1',
-    title: 'Breaking: Dhurandhar Crosses ₹1000 Crore Worldwide',
-    excerpt: 'Ranveer Singh\'s spy thriller enters elite club...',
-    category: 'Movies',
-    image: 'https://via.placeholder.com/300x200',
-    createdAt: new Date(),
-  },
-  {
-    id: '2',
-    title: 'Google to Finally Let You Change Gmail Username in 2026',
-    excerpt: 'A game-changer for millions of users worldwide...',
-    category: 'Tech',
-    image: 'https://via.placeholder.com/300x200',
-    createdAt: new Date(),
-  },
-  {
-    id: '3',
-    title: 'IPL 2026 Mega Auction: Dream Squads Analysis',
-    excerpt: 'Analyzing the dream squads for all 10 teams...',
-    category: 'Sports',
-    image: 'https://via.placeholder.com/300x200',
-    createdAt: new Date(),
-  },
-];
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
 
 export default function App() {
-  const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-
-  useEffect(() => {
-    loadArticles();
-  }, []);
-
-  const loadArticles = () => {
-    setTimeout(() => {
-      setArticles(mockArticles);
-      setLoading(false);
-      setRefreshing(false);
-    }, 1000);
-  };
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    loadArticles();
-  };
-
-  const renderArticle = ({ item }) => (
-    <TouchableOpacity style={styles.articleCard}>
-      <Image source={{ uri: item.image }} style={styles.articleImage} />
-      <View style={styles.articleContent}>
-        <View style={styles.categoryBadge}>
-          <Text style={styles.categoryText}>{item.category}</Text>
-        </View>
-        <Text style={styles.articleTitle}>{item.title}</Text>
-        <Text style={styles.articleExcerpt}>{item.excerpt}</Text>
-        <Text style={styles.articleDate}>
-          {item.createdAt.toLocaleDateString()}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  );
-
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#dc2626" />
-        <Text style={styles.loadingText}>Loading Krihaa News...</Text>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
       <StatusBar style="light" backgroundColor="#dc2626" />
@@ -96,17 +12,66 @@ export default function App() {
         <Text style={styles.headerSubtitle}>Breaking News & Entertainment</Text>
       </View>
 
-      {/* Articles List */}
-      <FlatList
-        data={articles}
-        renderItem={renderArticle}
-        keyExtractor={(item) => item.id}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContainer}
-      />
+      {/* Content */}
+      <ScrollView style={styles.content}>
+        <View style={styles.card}>
+          <Image 
+            source={{ uri: 'https://via.placeholder.com/300x150/dc2626/ffffff?text=Breaking+News' }}
+            style={styles.cardImage}
+          />
+          <View style={styles.cardContent}>
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>Movies</Text>
+            </View>
+            <Text style={styles.cardTitle}>Dhurandhar Crosses ₹1000 Crore Worldwide</Text>
+            <Text style={styles.cardText}>Ranveer Singh's spy thriller enters elite club...</Text>
+            <Text style={styles.cardDate}>Dec 26, 2025</Text>
+          </View>
+        </View>
+
+        <View style={styles.card}>
+          <Image 
+            source={{ uri: 'https://via.placeholder.com/300x150/1e40af/ffffff?text=Tech+News' }}
+            style={styles.cardImage}
+          />
+          <View style={styles.cardContent}>
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>Tech</Text>
+            </View>
+            <Text style={styles.cardTitle}>Google Gmail Username Change Coming 2026</Text>
+            <Text style={styles.cardText}>Revolutionary feature after years of requests...</Text>
+            <Text style={styles.cardDate}>Dec 26, 2025</Text>
+          </View>
+        </View>
+
+        <View style={styles.card}>
+          <Image 
+            source={{ uri: 'https://via.placeholder.com/300x150/059669/ffffff?text=Sports+News' }}
+            style={styles.cardImage}
+          />
+          <View style={styles.cardContent}>
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>Sports</Text>
+            </View>
+            <Text style={styles.cardTitle}>IPL 2026 Mega Auction Analysis</Text>
+            <Text style={styles.cardText}>Dream squads for all 10 teams analyzed...</Text>
+            <Text style={styles.cardDate}>Dec 25, 2025</Text>
+          </View>
+        </View>
+
+        <View style={styles.successMessage}>
+          <Text style={styles.successTitle}>🎉 App Working Successfully!</Text>
+          <Text style={styles.successText}>
+            This is your Krihaa News mobile app preview. In the production version:
+            {'\n\n'}
+            ✅ Connects to your Firebase database
+            {'\n'}✅ Shows real articles from krihaa.me
+            {'\n'}✅ Updates automatically when you publish
+            {'\n'}✅ Full search and category features
+            {'\n'}✅ Professional news reading experience
+          </Text>
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -115,17 +80,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-  },
-  loadingText: {
-    marginTop: 10,
-    fontSize: 16,
-    color: '#666',
   },
   header: {
     backgroundColor: '#dc2626',
@@ -143,10 +97,11 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.8)',
     marginTop: 4,
   },
-  listContainer: {
+  content: {
+    flex: 1,
     padding: 16,
   },
-  articleCard: {
+  card: {
     backgroundColor: 'white',
     borderRadius: 12,
     marginBottom: 16,
@@ -156,16 +111,16 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  articleImage: {
+  cardImage: {
     width: '100%',
-    height: 200,
+    height: 150,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
-  articleContent: {
+  cardContent: {
     padding: 16,
   },
-  categoryBadge: {
+  badge: {
     backgroundColor: '#dc2626',
     paddingHorizontal: 8,
     paddingVertical: 4,
@@ -173,26 +128,43 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginBottom: 8,
   },
-  categoryText: {
+  badgeText: {
     color: 'white',
     fontSize: 12,
     fontWeight: '600',
   },
-  articleTitle: {
+  cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 8,
     lineHeight: 24,
   },
-  articleExcerpt: {
+  cardText: {
     fontSize: 14,
     color: '#666',
     lineHeight: 20,
     marginBottom: 8,
   },
-  articleDate: {
+  cardDate: {
     fontSize: 12,
     color: '#999',
+  },
+  successMessage: {
+    backgroundColor: '#10b981',
+    padding: 20,
+    borderRadius: 12,
+    marginTop: 20,
+  },
+  successTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 12,
+  },
+  successText: {
+    fontSize: 14,
+    color: 'white',
+    lineHeight: 20,
   },
 });
